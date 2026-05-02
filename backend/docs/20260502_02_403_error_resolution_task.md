@@ -1,0 +1,9 @@
+- `[/]` 1. **쿠키 기반 인증 로직으로 변경**
+  - `[ ]` `ApiAuthController.java`: `accessToken`을 HttpOnly 쿠키로 굽도록 수정
+  - `[ ]` `JwtUtils.java`: `HttpServletRequest`의 쿠키에서 `accessToken`을 읽어오는 로직 추가
+- `[ ]` 2. **프론트엔드 헤더 수정 (`headers.html`)**
+  - `[ ]` `localStorage` 대신 Thymeleaf 또는 다른 방식을 사용하여 로그인 상태(`isLoggedIn`) 연동
+- `[ ]` 3. **`/game` 컨트롤러 및 화면 추가**
+  - `[ ]` `WebGameController.java` 생성 (`/game` 매핑)
+  - `[ ]` `game.html` 템플릿 생성
+- `[ ]` 4. **서버 재구동 및 동작 검증**

@@ -1,0 +1,44 @@
+spring:
+  profiles:
+    include: secret
+  application:
+    name: sinnau-platform
+  thymeleaf:
+    cache: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  # 1. Database 설정 (PostgreSQL)
+  datasource:
+    url: jdbc:postgresql://localhost:5432/platform
+    username: sinnau
+    password: sinnau123!
+    driver-class-name: org.postgresql.Driver
+
+jwt:
+  # 아래는 "sinnau-platform-backend-service-secret-key-2026-fighting"을
+  # Base64로 인코딩한 예시입니다. (실제 운영 시에는 더 복잡한 키를 생성해서 쓰세요)
+  secret: "c2lubmF1LXBsYXRmb3JtLWJhY2tlbmQtc2VydmljZS1zZWNyZXQta2V5LTIwMjYtZmlnaHRpbmc="
+  # 만료 시간: 3600000ms = 1시간
+  access-expiration: 3600000
+  refresh-expiration: 36000000
+
+logging:
+  level:
+    org.jooq: DEBUG # jOOQ가 생성하는 SQL을 보고 싶을 때 유용합니다.
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %5p [%X{traceId}] %logger{36} - %msg%n"
+
+platform:
+  cookie:
+    secure: false  # 로컬은 false, 운영(prod)은 true로 관리
+    same-site: Lax

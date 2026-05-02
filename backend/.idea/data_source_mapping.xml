@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/src/main/java/kr/sinnau/platform/domain/auth/entity/dao/AuthKeyRepository.java" value="d0e41e46-1f7e-4203-b9e1-82437deabef7" />
+  </component>
+</project>

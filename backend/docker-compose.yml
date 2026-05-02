@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    restart: always
+    container_name: sinnau-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: platform
+      POSTGRES_USER: sinnau
+      POSTGRES_PASSWORD: sinnau123!
