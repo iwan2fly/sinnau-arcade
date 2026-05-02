@@ -1,0 +1,64 @@
+> Task :compileJava UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :resolveMainClassName UP-TO-DATE
+
+> Task :bootRun
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.1)
+
+2026-05-02 11:57:00.516 [restartedMain]  INFO [] k.s.platform.PlatformApplication - Starting PlatformApplication using Java 21.0.11 with PID 22832 (C:\work\code\sinnau-arcade\backend\build\classes\java\main started by iwan2 in C:\work\code\sinnau-arcade\backend)
+2026-05-02 11:57:00.516 [restartedMain]  INFO [] k.s.platform.PlatformApplication - The following 1 profile is active: "secret"
+2026-05-02 11:57:00.552 [restartedMain]  INFO [] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-05-02 11:57:00.552 [restartedMain]  INFO [] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-05-02 11:57:00.564 [restartedMain]  INFO [] o.s.b.d.c.l.DockerComposeLifecycleManager - Using Docker Compose file C:\work\code\sinnau-arcade\backend\docker-compose.yml
+2026-05-02 11:57:01.283 [OutputReader-stderr]  INFO [] o.s.b.docker.compose.core.DockerCli -  Container sinnau-db Creating 
+2026-05-02 11:57:01.321 [OutputReader-stderr]  INFO [] o.s.b.docker.compose.core.DockerCli -  Container sinnau-db Error response from daemon: Conflict. The container name "/sinnau-db" is already in use by container "c33cf2cb513d9f998eb72e41f048578d4d54ad2e2acb83d424afddcfd4c55859". You have to remove (or rename) that container to be able to reuse that name. 
+2026-05-02 11:57:01.326 [OutputReader-stderr]  INFO [] o.s.b.docker.compose.core.DockerCli - Error response from daemon: Conflict. The container name "/sinnau-db" is already in use by container "c33cf2cb513d9f998eb72e41f048578d4d54ad2e2acb83d424afddcfd4c55859". You have to remove (or rename) that container to be able to reuse that name.
+2026-05-02 11:57:01.350 [restartedMain] ERROR [] o.s.boot.SpringApplication - Application run failed
+org.springframework.boot.docker.compose.core.ProcessExitException: 'docker compose --file C:\work\code\sinnau-arcade\backend\docker-compose.yml --ansi never up --no-color --detach --wait' failed with exit code 1.
+
+Stdout:
+
+
+Stderr:
+ Container sinnau-db Creating 
+ Container sinnau-db Error response from daemon: Conflict. The container name "/sinnau-db" is already in use by container "c33cf2cb513d9f998eb72e41f048578d4d54ad2e2acb83d424afddcfd4c55859". You have to remove (or rename) that container to be able to reuse that name. 
+Error response from daemon: Conflict. The container name "/sinnau-db" is already in use by container "c33cf2cb513d9f998eb72e41f048578d4d54ad2e2acb83d424afddcfd4c55859". You have to remove (or rename) that container to be able to reuse that name.
+
+	at org.springframework.boot.docker.compose.core.ProcessRunner.run(ProcessRunner.java:97)
+	at org.springframework.boot.docker.compose.core.DockerCli.run(DockerCli.java:77)
+	at org.springframework.boot.docker.compose.core.DefaultDockerCompose.up(DefaultDockerCompose.java:56)
+	at org.springframework.boot.docker.compose.lifecycle.StartCommand.applyTo(StartCommand.java:51)
+	at org.springframework.boot.docker.compose.lifecycle.DockerComposeLifecycleManager.start(DockerComposeLifecycleManager.java:131)
+	at org.springframework.boot.docker.compose.lifecycle.DockerComposeListener.onApplicationEvent(DockerComposeListener.java:53)
+	at org.springframework.boot.docker.compose.lifecycle.DockerComposeListener.onApplicationEvent(DockerComposeListener.java:35)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.doInvokeListener(SimpleApplicationEventMulticaster.java:185)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.invokeListener(SimpleApplicationEventMulticaster.java:178)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:156)
+	at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:138)
+	at org.springframework.boot.context.event.EventPublishingRunListener.multicastInitialEvent(EventPublishingRunListener.java:136)
+	at org.springframework.boot.context.event.EventPublishingRunListener.contextLoaded(EventPublishingRunListener.java:98)
+	at org.springframework.boot.SpringApplicationRunListeners.lambda$contextLoaded$4(SpringApplicationRunListeners.java:72)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.boot.SpringApplicationRunListeners.doWithListeners(SpringApplicationRunListeners.java:118)
+	at org.springframework.boot.SpringApplicationRunListeners.doWithListeners(SpringApplicationRunListeners.java:112)
+	at org.springframework.boot.SpringApplicationRunListeners.contextLoaded(SpringApplicationRunListeners.java:72)
+	at org.springframework.boot.SpringApplication.prepareContext(SpringApplication.java:416)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:317)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at kr.sinnau.platform.PlatformApplication.main(PlatformApplication.java:11)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+
+BUILD SUCCESSFUL in 2s
+4 actionable tasks: 1 executed, 3 up-to-date

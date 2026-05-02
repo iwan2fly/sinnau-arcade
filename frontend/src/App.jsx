@@ -14,7 +14,7 @@ function App() {
     // Check authentication status on load
     const checkAuth = async () => {
       try {
-        const response = await api.get('/v1/profile');
+        const response = await api.get('/v1/profile/me');
         if (response.data && response.data.email) {
           setIsAuthenticated(true);
           setUser(response.data);
