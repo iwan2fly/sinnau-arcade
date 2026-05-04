@@ -1,5 +1,6 @@
 package kr.sinnau.platform.config;
 
+import kr.sinnau.platform.common.security.CustomAuthenticationEntryPoint;
 import kr.sinnau.platform.common.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +37,7 @@ public class SecurityConfig {
      * 17	DispatcherServlet	필터를 모두 통과하면 드디어 Controller에 도달!
      */
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
 
 
@@ -50,6 +52,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(SecurityConstants.AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
                 // 4. UsernamePasswordAuthenticationFilter 실행 전에 우리 JWT 필터 실행
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -8,7 +8,10 @@ import api from './api/axios';
 import './App.css';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    // Optimistic check: if 'isLoggedIn' cookie exists, assume authenticated initially
+    return document.cookie.split(';').some((item) => item.trim().startsWith('isLoggedIn=true'));
+  });
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -22,8 +25,11 @@ function App() {
       if (response.data && response.data.success) {
         setIsAuthenticated(true);
         setUser(response.data.data);
+      } else {
+        setIsAuthenticated(false);
       }
     } catch (error) {
+      console.error("Auth check failed:", error.response?.status, error.message);
       setIsAuthenticated(false);
     }
   };

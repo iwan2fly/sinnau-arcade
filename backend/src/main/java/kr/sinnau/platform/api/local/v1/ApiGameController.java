@@ -17,14 +17,19 @@ public class ApiGameController {
     private final GameService gameService;
 
     @PostMapping("/start")
-    public ApiResponse<GameResponse> startGame(@AuthenticationPrincipal UserDetails userDetails) {
-        return ApiResponse.ok(gameService.startGame(userDetails.getUsername()));
+    public ApiResponse<GameResponse> startGame(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam(defaultValue = "COIN_FLIP") String gameId,
+            @RequestParam(defaultValue = "100") long betAmount) {
+        return ApiResponse.ok(gameService.startGame(userDetails.getUsername(), gameId, betAmount));
     }
 
     @PostMapping("/finish")
     public ApiResponse<GameResult> finishGame(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam boolean isSuccess) {
-        return ApiResponse.ok(gameService.finishGame(userDetails.getUsername(), isSuccess));
+            @RequestParam(defaultValue = "COIN_FLIP") String gameId,
+            @RequestParam boolean isSuccess,
+            @RequestParam(defaultValue = "100") long betAmount) {
+        return ApiResponse.ok(gameService.finishGame(userDetails.getUsername(), gameId, isSuccess, betAmount));
     }
 }
