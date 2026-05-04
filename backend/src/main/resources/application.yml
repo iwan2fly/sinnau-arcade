@@ -3,8 +3,6 @@ spring:
     include: secret
   application:
     name: sinnau-platform
-  thymeleaf:
-    cache: false
   mail:
     host: smtp.gmail.com
     port: 587

@@ -1,31 +1,80 @@
 package kr.sinnau.platform.domain.game;
 
-import kr.sinnau.platform.repository.GameRepository;
+import kr.sinnau.platform.domain.auth.entity.User;
+import kr.sinnau.platform.domain.auth.entity.dao.UserDao;
 import kr.sinnau.platform.domain.game.dto.GameResponse;
 import kr.sinnau.platform.domain.game.dto.GameResult;
+import kr.sinnau.platform.domain.game.entity.CoinHistory;
+import kr.sinnau.platform.domain.game.repository.CoinHistoryRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
+@Service
+@RequiredArgsConstructor
 public class GameService {
 
+    private final UserDao userDao;
+    private final CoinHistoryRepository coinHistoryRepository;
 
-    // 1. 게임 시작
-    public GameResponse startGame(Long userId) {
-        // 실제로는 DB에 저장하고 생성된 ID를 가져와야 함
-        Long gameId = 1L;
+    private static final long GAME_BET_AMOUNT = 100L;
+    private static final long GAME_WIN_REWARD = 200L;
 
-        // 현재 시간을 시작 시간으로 설정
-        LocalDateTime startTime = LocalDateTime.now();
+    @Transactional
+    public GameResponse startGame(String email) {
+        User user = userDao.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // 빌더 패턴이나 생성자를 사용하여 Response 생성
+        // 1. 코인 차감
+        user.subtractCoin(GAME_BET_AMOUNT);
+        userDao.save(user);
+
+        // 2. 히스토리 기록
+        coinHistoryRepository.save(CoinHistory.builder()
+                .userId(user.getId())
+                .amount(GAME_BET_AMOUNT)
+                .type("SPEND")
+                .reason("GAME_BET")
+                .build());
+
         return GameResponse.builder()
-                .gameId(gameId)
+                .gameId(System.currentTimeMillis()) // 임시 게임 ID
                 .status("PLAYING")
                 .message("게임이 시작되었습니다!")
-                .startTime(startTime)
+                .startTime(LocalDateTime.now())
                 .build();
     }
 
+    @Transactional
+    public GameResult finishGame(String email, boolean isSuccess) {
+        User user = userDao.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        String message = isSuccess ? "승리하셨습니다!" : "패배하셨습니다.";
+        int earnedGold = 0;
+
+        if (isSuccess) {
+            // 1. 보상 지급
+            user.addCoin(GAME_WIN_REWARD);
+            userDao.save(user);
+
+            // 2. 히스토리 기록
+            coinHistoryRepository.save(CoinHistory.builder()
+                    .userId(user.getId())
+                    .amount(GAME_WIN_REWARD)
+                    .type("EARN")
+                    .reason("GAME_WIN")
+                    .build());
+            
+            earnedGold = (int) GAME_WIN_REWARD;
+        }
+
+        return GameResult.builder()
+                .isSuccess(isSuccess)
+                .resultMessage(message)
+                .earnedGold(earnedGold)
+                .build();
+    }
 }

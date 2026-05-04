@@ -94,7 +94,9 @@ public class JwtProvider {
      */
     public Authentication getAuthentication(String token) {
         String email = getEmail(token);
-        return new UsernamePasswordAuthenticationToken(email, "", Collections.emptyList());
+        org.springframework.security.core.userdetails.User userDetails = 
+                new org.springframework.security.core.userdetails.User(email, "", Collections.emptyList());
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
 

@@ -23,7 +23,7 @@ function Login({ setAuth, setUser }) {
       setStep(2);
       setMessage('인증 코드가 이메일로 전송되었습니다.');
     } catch (err) {
-      setError(err.response?.data?.message || '코드 전송에 실패했습니다.');
+      setError(err.response?.data?.error?.message || '코드 전송에 실패했습니다.');
     } finally {
       setIsLoading(false);
     }
@@ -38,18 +38,20 @@ function Login({ setAuth, setUser }) {
     
     try {
       const response = await api.post('/v1/auth/verify', { email, keyString: code });
-      if (response.status === 200) {
+      if (response.data.success) {
         setAuth(true);
         try {
           const profileRes = await api.get('/v1/profile/me');
-          setUser(profileRes.data);
+          if (profileRes.data.success) {
+            setUser(profileRes.data.data);
+          }
         } catch (profileErr) {
           console.error("Profile fetch error:", profileErr);
         }
         navigate('/game');
       }
     } catch (err) {
-      setError(err.response?.data?.message || '인증에 실패했습니다. 코드를 다시 확인해주세요.');
+      setError(err.response?.data?.error?.message || '인증에 실패했습니다. 코드를 다시 확인해주세요.');
     } finally {
       setIsLoading(false);
     }

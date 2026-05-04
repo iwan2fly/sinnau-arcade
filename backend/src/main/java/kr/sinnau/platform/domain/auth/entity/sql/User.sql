@@ -4,6 +4,7 @@ CREATE TABLE "user" (
   nickname        VARCHAR(64) NOT NULL UNIQUE,
   user_status     VARCHAR(16) NOT NULL,
   profile_image_url VARCHAR(256),
+  coin            BIGINT DEFAULT 0,
   terms_version   VARCHAR(20) NOT NULL,
   terms_agreed_at TIMESTAMPTZ NOT NULL,
   last_login_at   TIMESTAMPTZ,

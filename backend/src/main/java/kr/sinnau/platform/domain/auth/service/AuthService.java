@@ -29,6 +29,7 @@ public class AuthService {
     private final UserDao userDao;
     private final UserRoleDao userRoleDao;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final kr.sinnau.platform.domain.game.repository.CoinHistoryRepository coinHistoryRepository;
 
     @Transactional
     public void sendVerificationCode(String email) {
@@ -58,12 +59,28 @@ public class AuthService {
         authKeyDao.deleteById(authKey.getId());
 
         // 5. 가입 완료 로직 호출! (이제야 실행됩니다)
-        Optional<User> userOptional = userDao.findByEmail(email);
-        if ( userOptional.isEmpty() ) {
-            signUp(email, loginKey);
-        }
+        User user = userDao.findByEmail(email).orElseGet(() -> signUp(email, loginKey));
+
+        // 6. 가입 축하 코인 지급 체크
+        checkAndGrantWelcomeCoin(user);
 
         return issueTokens(email);
+    }
+
+    private void checkAndGrantWelcomeCoin(User user) {
+        String welcomeReason = "WELCOME_COIN";
+        if (!coinHistoryRepository.existsByUserIdAndReason(user.getId(), welcomeReason)) {
+            long welcomeAmount = 10000L;
+            user.addCoin(welcomeAmount);
+            userDao.save(user);
+
+            coinHistoryRepository.save(kr.sinnau.platform.domain.game.entity.CoinHistory.builder()
+                    .userId(user.getId())
+                    .amount(welcomeAmount)
+                    .type("EARN")
+                    .reason(welcomeReason)
+                    .build());
+        }
     }
 
     /**
@@ -110,7 +127,7 @@ public class AuthService {
     }
 
     @Transactional // 중요: 유저 생성과 권한 부여는 한 몸이어야 합니다!
-    public void signUp(String email, String loginKey) {
+    public User signUp(String email, String loginKey) {
 
         String nickName = generateRandomNickname() + "_" + loginKey;
 
@@ -133,6 +150,8 @@ public class AuthService {
                 .build();
 
         userRoleDao.save(defaultRole);
+
+        return savedUser;
     }
 
 
