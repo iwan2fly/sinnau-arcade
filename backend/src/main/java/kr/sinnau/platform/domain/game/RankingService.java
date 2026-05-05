@@ -1,13 +1,13 @@
 package kr.sinnau.platform.domain.game;
 
 import kr.sinnau.platform.domain.game.repository.GamePlayLogRepository;
+import kr.sinnau.platform.domain.game.repository.RankingResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -15,12 +15,13 @@ public class RankingService {
 
     private final GamePlayLogRepository gamePlayLogRepository;
 
-    public List<Map<String, Object>> getRankings(String gameId, String category, String period) {
+    public List<RankingResult> getRankings(String gameId, String category, String period) {
         LocalDateTime since = getSinceDate(period);
         int limit = 10;
 
         return switch (category.toLowerCase()) {
-            case "profit" -> gamePlayLogRepository.getProfitRanking(gameId, since, limit);
+            case "profit" -> gamePlayLogRepository.getProfitRanking
+                    (gameId, since, limit);
             case "games" -> gamePlayLogRepository.getGamesRanking(gameId, since, limit);
             case "winrate" -> gamePlayLogRepository.getWinRateRanking(gameId, since, 5, limit); // Min 5 games for win rate
             default -> new ArrayList<>();

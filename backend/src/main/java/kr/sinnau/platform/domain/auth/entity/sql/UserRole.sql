@@ -5,7 +5,7 @@ CREATE TABLE user_role (
     create_user_id  VARCHAR(100),
     update_user_id  VARCHAR(100),
     created_at      TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at      TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP
+    updated_at      TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uk_user_role UNIQUE (user_id, role_code)
 );
 

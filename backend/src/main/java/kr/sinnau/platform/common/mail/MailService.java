@@ -24,6 +24,9 @@ public class MailService {
     private final JavaMailSender emailSender;
     private final ResourceLoader resourceLoader;
 
+    @org.springframework.beans.factory.annotation.Value("${spring.mail.username}")
+    private String fromEmail;
+
     /**
      * @param to 수신자 이메일
      * @param subject 메일 제목
@@ -37,7 +40,7 @@ public class MailService {
         try {
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom("iwan2fly@gmail.com");
+            helper.setFrom(fromEmail);
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(htmlContent, true);
