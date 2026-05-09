@@ -10,6 +10,11 @@
         <module name="platform.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="platform" target="21" />
+      <module name="platform.main" target="21" />
+      <module name="platform.test" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
